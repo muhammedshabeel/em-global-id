@@ -3,34 +3,69 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Emarath Digital Card</title>
+  <title>Digital Business Card</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <div class="header">
-        <div class="avatar" id="avatar">EG</div>
-        <div class="title">
-          <h1 id="name">Emarath Contact</h1>
-          <div class="role" id="role"></div>
-          <div class="company" id="company">Emarath Global Pvt Ltd</div>
+  <main class="page">
+    <section class="hero">
+      <img id="photo" class="hero__img" alt="Profile photo" />
+      <div class="hero__wave"></div>
+      <div class="hero__badge">
+        <span class="hero__badgeDot"></span>
+        <span>Verified contact</span>
+      </div>
+    </section>
+
+    <section class="content">
+      <header class="header">
+        <div class="header__text">
+          <h1 id="name">Name</h1>
+          <p id="role" class="role">Role</p>
+          <p id="company" class="company">Company</p>
         </div>
-      </div>
 
-      <div class="badge">✅ Verified contact</div>
-      <div class="divider"></div>
+        <div class="brand">
+          <div class="brand__mark">e</div>
+        </div>
+      </header>
 
-      <div class="actions">
-        <a class="btn primary" id="call" href="#"><span>📞</span> Call</a>
-        <a class="btn" id="wa" href="#"><span>💬</span> WhatsApp</a>
-        <a class="btn" id="email" href="#"><span>✉️</span> Email</a>
-        <a class="btn" id="save" href="#"><span>💾</span> Save Contact</a>
-      </div>
+      <section class="rows">
+        <a id="emailLink" class="row" href="#">
+          <span class="row__icon">✉</span>
+          <div class="row__text">
+            <div class="row__label">Email</div>
+            <div id="emailText" class="row__value">email</div>
+          </div>
+        </a>
 
-      <div class="small">Scan QR to connect. Save contact works on all phones.</div>
-    </div>
-  </div>
+        <a id="phoneLink" class="row" href="#">
+          <span class="row__icon">☎</span>
+          <div class="row__text">
+            <div class="row__label">Phone</div>
+            <div id="phoneText" class="row__value">phone</div>
+          </div>
+        </a>
+
+        <a id="waLink" class="row" href="#" target="_blank" rel="noopener">
+          <span class="row__icon">💬</span>
+          <div class="row__text">
+            <div class="row__label">WhatsApp</div>
+            <div id="waText" class="row__value">Chat on WhatsApp</div>
+          </div>
+        </a>
+      </section>
+
+      <section class="buttons">
+        <a id="saveBtn" class="btn btn--primary" download>⬇ Save Contact</a>
+        <button id="shareBtn" class="btn btn--ghost" type="button">↗ Share</button>
+      </section>
+
+      <p class="hint">Scan QR to connect. Save contact works on all phones.</p>
+
+      <footer class="footer">Emarath Global Pvt Ltd</footer>
+    </section>
+  </main>
 
   <script src="card.js"></script>
 </body>
