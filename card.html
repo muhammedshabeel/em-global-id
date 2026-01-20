@@ -2,68 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Digital Business Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emarath Digital Card</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <main class="page">
-    <section class="hero">
-      <img id="photo" class="hero__img" alt="Profile photo" />
-      <div class="hero__wave"></div>
-      <div class="hero__badge">
-        <span class="hero__badgeDot"></span>
-        <span>Verified contact</span>
+    <section class="card" id="card">
+      <!-- HERO IMAGE -->
+      <div class="hero">
+        <img id="photo" class="heroImg" src="assets/people/default.jpg" alt="Profile photo" />
+        <div class="heroOverlay">
+          <svg class="wave" viewBox="0 0 500 140" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,85 C110,120 210,15 320,60 C395,92 445,84 500,70 L500,140 L0,140 Z"></path>
+          </svg>
+
+          <div class="brand">
+            <img class="brandLogo" src="assets/logo.png" alt="Emarath logo" />
+          </div>
+        </div>
       </div>
-    </section>
 
-    <section class="content">
-      <header class="header">
-        <div class="header__text">
-          <h1 id="name">Name</h1>
-          <p id="role" class="role">Role</p>
-          <p id="company" class="company">Company</p>
+      <!-- BODY -->
+      <div class="body">
+        <div class="nameBlock">
+          <div class="nameLine"></div>
+          <div>
+            <h1 id="name" class="name">Name</h1>
+            <div id="role" class="role">Role</div>
+            <div id="company" class="company">Company</div>
+          </div>
         </div>
 
-        <div class="brand">
-          <div class="brand__mark">e</div>
+        <button class="btnPrimary" id="saveBtn">⬇&nbsp; SAVE CONTACT</button>
+
+        <div class="actions">
+          <a class="pill" id="emailLink" href="#">
+            <span class="pillIcon">✉️</span>
+            <span class="pillText" id="email">email</span>
+          </a>
+
+          <a class="pill" id="phoneLink" href="#">
+            <span class="pillIcon">📞</span>
+            <span class="pillText" id="phone">phone</span>
+          </a>
+
+          <a class="pill" id="waLink" href="#" target="_blank" rel="noopener">
+            <span class="pillIcon">💬</span>
+            <span class="pillText" id="waText">WhatsApp</span>
+          </a>
         </div>
-      </header>
 
-      <section class="rows">
-        <a id="emailLink" class="row" href="#">
-          <span class="row__icon">✉</span>
-          <div class="row__text">
-            <div class="row__label">Email</div>
-            <div id="emailText" class="row__value">email</div>
-          </div>
-        </a>
+        <div class="muted">Scan QR to connect. Save contact works on all phones.</div>
+        <div class="footer" id="footerCompany">Emarath Global Pvt Ltd</div>
 
-        <a id="phoneLink" class="row" href="#">
-          <span class="row__icon">☎</span>
-          <div class="row__text">
-            <div class="row__label">Phone</div>
-            <div id="phoneText" class="row__value">phone</div>
-          </div>
-        </a>
-
-        <a id="waLink" class="row" href="#" target="_blank" rel="noopener">
-          <span class="row__icon">💬</span>
-          <div class="row__text">
-            <div class="row__label">WhatsApp</div>
-            <div id="waText" class="row__value">Chat on WhatsApp</div>
-          </div>
-        </a>
-      </section>
-
-      <section class="buttons">
-        <a id="saveBtn" class="btn btn--primary" download>⬇ Save Contact</a>
-        <button id="shareBtn" class="btn btn--ghost" type="button">↗ Share</button>
-      </section>
-
-      <p class="hint">Scan QR to connect. Save contact works on all phones.</p>
-
-      <footer class="footer">Emarath Global Pvt Ltd</footer>
+        <button class="btnGhost" id="shareBtn">↗ Share</button>
+      </div>
     </section>
   </main>
 
