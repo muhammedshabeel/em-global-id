@@ -1,231 +1,242 @@
-/* Reset */
-* { box-sizing: border-box; }
-html, body { height: 100%; }
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: #0f172a;
-  background: #f4f7ff;
+:root{
+  --bg1:#eef3fb;
+  --bg2:#f8fbff;
+
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+
+  --blue:#2563eb;
+  --blue2:#1d4ed8;
+
+  --border:rgba(15, 23, 42, .08);
+  --shadow: 0 22px 60px rgba(15, 23, 42, .10);
+  --shadow2: 0 10px 30px rgba(15, 23, 42, .08);
+
+  --r:22px;
 }
 
-/* HiHello-like centered phone card */
-.page {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 600px at 30% 20%, #dbeafe 0%, transparent 60%),
+    radial-gradient(900px 500px at 80% 30%, #e0e7ff 0%, transparent 55%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
-.card {
-  width: 100%;
-  max-width: 420px;          /* ✅ phone-sized even on desktop */
-  background: #fff;
-  border-radius: 22px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
-  border: 1px solid rgba(15, 23, 42, 0.06);
+.page{
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px 18px;
 }
 
-/* HERO */
-.hero {
-  position: relative;
-  height: 320px;
-  background: #e9efff;
+.shell{
+  width:min(980px, 100%);
+  display:flex;
+  justify-content:center;
 }
 
-.heroImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 20%;
-  display: block;
+.card{
+  width:min(390px, 100%);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  box-shadow:var(--shadow);
+  overflow:hidden;
 }
 
-/* Wave + logo overlay */
-.heroOverlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.hero{
+  position:relative;
+  height:220px;
+  background:#e9f0ff;
+}
+.hero img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter:saturate(1.02) contrast(1.02);
 }
 
-.wave {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 130px;
-  width: 100%;
+.wave{
+  position:absolute;
+  left:0; right:0; bottom:-1px;
+  height:92px;
+  background:var(--card);
+  border-top-left-radius: 80% 90px;
+  border-top-right-radius: 80% 90px;
 }
 
-.wave path {
-  fill: #ffffff;
+.brand{
+  position:absolute;
+  right:16px;
+  bottom:18px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:8px 10px;
+  background:rgba(255,255,255,.70);
+  border:1px solid rgba(255,255,255,.65);
+  border-radius:14px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 20px rgba(15,23,42,.08);
+}
+.brand img{
+  width:22px;
+  height:22px;
+  object-fit:contain;
 }
 
-/* A thin blue accent curve */
-.wave::after {
-  content: "";
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 52px;
-  height: 10px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #2b63ff, #1d4ed8);
-  filter: drop-shadow(0 10px 18px rgba(29, 78, 216, 0.18));
+.content{
+  padding:18px 18px 14px;
 }
 
-/* Logo at right under wave */
-.brand {
-  position: absolute;
-  right: 18px;
-  bottom: 64px;
-  width: 46px;
-  height: 46px;
-  background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+.name{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  margin:0;
+  line-height:1.15;
+}
+.role{
+  margin:6px 0 0;
+  font-size:14px;
+  font-weight:700;
+  color:var(--text);
+}
+.company{
+  margin:4px 0 0;
+  font-size:14px;
+  color:var(--muted);
+  font-style:italic;
 }
 
-.brandLogo {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
+.primary{
+  margin:14px 0 0;
+  width:100%;
+  border:0;
+  cursor:pointer;
+  background:linear-gradient(180deg, var(--blue), var(--blue2));
+  color:#fff;
+  font-weight:800;
+  padding:13px 14px;
+  border-radius:14px;
+  box-shadow: 0 14px 25px rgba(37,99,235,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+.primary:hover{ transform: translateY(-1px); }
+.primary:active{ transform: translateY(0); opacity:.95; }
+
+.rows{
+  margin-top:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
-/* BODY */
-.body {
-  padding: 18px 18px 16px;
+.row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 12px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:rgba(248,250,252,.8);
+  box-shadow: var(--shadow2);
 }
 
-.nameBlock {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  margin-top: 6px;
+.icon{
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  background: rgba(37, 99, 235, .10);
+  border: 1px solid rgba(37, 99, 235, .18);
+  flex:0 0 auto;
+}
+.icon img{
+  width:18px;
+  height:18px;
+  opacity:.9;
 }
 
-.nameLine {
-  width: 3px;
-  height: 70px;
-  background: rgba(15, 23, 42, 0.25);
-  border-radius: 99px;
-  margin-top: 6px;
+.meta{
+  flex:1;
+  min-width:0;
+}
+.meta .label{
+  font-size:12px;
+  color:var(--muted);
+  margin:0;
+}
+.meta .value{
+  margin:2px 0 0;
+  font-weight:800;
+  font-size:14px;
+  color:var(--text);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
-.name {
-  margin: 0;
-  font-size: 28px;
-  line-height: 1.15;
-  letter-spacing: -0.2px;
+.row a{
+  text-decoration:none;
+  color:inherit;
+  display:flex;
+  align-items:center;
+  width:100%;
 }
 
-.role {
-  margin-top: 6px;
-  font-size: 16px;
-  font-weight: 800;
+.footer{
+  padding:12px 18px 18px;
+  display:flex;
+  gap:10px;
+  flex-direction:column;
 }
 
-.company {
-  margin-top: 4px;
-  font-size: 15px;
-  font-style: italic;
-  color: rgba(15, 23, 42, 0.70);
+.share{
+  width:100%;
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:14px;
+  padding:12px 14px;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
 }
 
-/* Save button */
-.btnPrimary {
-  margin-top: 14px;
-  width: 100%;
-  border: none;
-  border-radius: 12px;
-  padding: 14px 12px;
-  font-weight: 900;
-  letter-spacing: 0.6px;
-  color: white;
-  background: #3559c7;
-  box-shadow: 0 14px 30px rgba(53, 89, 199, 0.28);
-  cursor: pointer;
+.smallnote{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:6px;
 }
 
-.btnPrimary:active { transform: translateY(1px); }
-
-/* Actions pills */
-.actions {
-  margin-top: 14px;
-  display: grid;
-  gap: 12px;
+/* Desktop: keep it centered like HiHello */
+@media (min-width: 920px){
+  .card{
+    width:420px;
+  }
+  .hero{ height:240px; }
 }
 
-.pill {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  text-decoration: none;
-  color: inherit;
-  background: #f7f9ff;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-}
-
-.pillIcon {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border-radius: 999px;
-  background: #e7efff;
-  font-size: 20px;
-  flex: 0 0 auto;
-}
-
-.pillText {
-  font-weight: 800;
-  font-size: 16px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Footer text */
-.muted {
-  margin-top: 14px;
-  text-align: center;
-  font-size: 13px;
-  color: rgba(15, 23, 42, 0.55);
-}
-
-.footer {
-  margin-top: 10px;
-  text-align: center;
-  font-size: 13px;
-  color: rgba(15, 23, 42, 0.55);
-}
-
-/* Share */
-.btnGhost {
-  margin-top: 12px;
-  width: 100%;
-  border-radius: 14px;
-  padding: 12px 12px;
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  font-weight: 800;
-  cursor: pointer;
-}
-
-/* Mobile fine-tuning */
-@media (max-width: 380px) {
-  .hero { height: 270px; }
-  .name { font-size: 24px; }
-  .pillText { font-size: 15px; }
-}
-
-/* Desktop: keep it centered + phone-size (HiHello behaviour) */
-@media (min-width: 900px) {
-  body { background: #f3f6ff; }
-  .page { padding: 36px; }
+/* Mobile */
+@media (max-width: 420px){
+  .content{ padding:16px 14px 12px; }
+  .footer{ padding:10px 14px 16px; }
+  .name{ font-size:20px; }
 }

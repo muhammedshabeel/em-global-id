@@ -1,66 +1,73 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Emarath Digital Card</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Emarath Digital ID</title>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
-
 <body>
-  <main class="page">
-    <section class="card" id="card">
-      <!-- HERO IMAGE -->
-      <div class="hero">
-        <img id="photo" class="heroImg" src="assets/people/default.jpg" alt="Profile photo" />
-        <div class="heroOverlay">
-          <svg class="wave" viewBox="0 0 500 140" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0,85 C110,120 210,15 320,60 C395,92 445,84 500,70 L500,140 L0,140 Z"></path>
-          </svg>
-
+  <div class="page">
+    <div class="shell">
+      <div class="card">
+        <div class="hero">
+          <img id="photo" alt="Profile photo" />
           <div class="brand">
-            <img class="brandLogo" src="assets/logo.png" alt="Emarath logo" />
+            <img src="assets/logo.png" alt="Emarath"/>
           </div>
+          <div class="wave"></div>
+        </div>
+
+        <div class="content">
+          <h1 class="name" id="name"></h1>
+          <p class="role" id="role"></p>
+          <p class="company" id="company"></p>
+
+          <button class="primary" id="saveBtn">
+            ⬇︎ <span>Save Contact</span>
+          </button>
+
+          <div class="rows">
+            <div class="row" id="emailRow">
+              <a id="emailLink" href="#">
+                <div class="icon"><img src="assets/icons/mail.svg" alt=""></div>
+                <div class="meta">
+                  <p class="label">Email</p>
+                  <p class="value" id="email"></p>
+                </div>
+              </a>
+            </div>
+
+            <div class="row" id="phoneRow">
+              <a id="phoneLink" href="#">
+                <div class="icon"><img src="assets/icons/phone.svg" alt=""></div>
+                <div class="meta">
+                  <p class="label">Phone</p>
+                  <p class="value" id="phone"></p>
+                </div>
+              </a>
+            </div>
+
+            <div class="row" id="waRow">
+              <a id="waLink" href="#">
+                <div class="icon"><img src="assets/icons/wa.svg" alt=""></div>
+                <div class="meta">
+                  <p class="label">WhatsApp</p>
+                  <p class="value" id="waText">Message on WhatsApp</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="smallnote" id="footerCompany"></div>
+        </div>
+
+        <div class="footer">
+          <button class="share" id="shareBtn">↗︎ Share</button>
         </div>
       </div>
-
-      <!-- BODY -->
-      <div class="body">
-        <div class="nameBlock">
-          <div class="nameLine"></div>
-          <div>
-            <h1 id="name" class="name">Name</h1>
-            <div id="role" class="role">Role</div>
-            <div id="company" class="company">Company</div>
-          </div>
-        </div>
-
-        <button class="btnPrimary" id="saveBtn">⬇&nbsp; SAVE CONTACT</button>
-
-        <div class="actions">
-          <a class="pill" id="emailLink" href="#">
-            <span class="pillIcon">✉️</span>
-            <span class="pillText" id="email">email</span>
-          </a>
-
-          <a class="pill" id="phoneLink" href="#">
-            <span class="pillIcon">📞</span>
-            <span class="pillText" id="phone">phone</span>
-          </a>
-
-          <a class="pill" id="waLink" href="#" target="_blank" rel="noopener">
-            <span class="pillIcon">💬</span>
-            <span class="pillText" id="waText">WhatsApp</span>
-          </a>
-        </div>
-
-        <div class="muted">Scan QR to connect. Save contact works on all phones.</div>
-        <div class="footer" id="footerCompany">Emarath Global Pvt Ltd</div>
-
-        <button class="btnGhost" id="shareBtn">↗ Share</button>
-      </div>
-    </section>
-  </main>
+    </div>
+  </div>
 
   <script src="card.js"></script>
 </body>
