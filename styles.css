@@ -227,3 +227,75 @@ h1{
     border-radius:22px;
   }
 }
+/* ------------------------------
+   MOBILE FIRST FIX (HiHello feel)
+------------------------------ */
+
+* { box-sizing: border-box; }
+img { max-width: 100%; display: block; }
+
+.container, .page, .wrap, .layout {
+  width: 100%;
+}
+
+/* Force stacked layout on phones */
+@media (max-width: 899px) {
+
+  /* If you used grid/flex somewhere, kill it on mobile */
+  .container, .wrap, .layout {
+    display: block !important;
+  }
+
+  /* Main card wrapper */
+  .card {
+    width: 100% !important;
+    max-width: 420px !important;
+    margin: 16px auto !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+  }
+
+  /* Make hero image full width on top */
+  .hero, .photo, .left, .image-side {
+    width: 100% !important;
+    height: 240px !important;
+    border-radius: 22px 22px 0 0 !important;
+    overflow: hidden !important;
+  }
+
+  .hero img, .photo img, .left img, .image-side img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+  }
+
+  /* Content section below */
+  .content, .right, .details, .info {
+    width: 100% !important;
+    padding: 18px 16px 16px !important;
+  }
+
+  /* Buttons should wrap nicely */
+  .actions, .buttons {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  /* Avoid horizontal scroll */
+  body {
+    overflow-x: hidden !important;
+  }
+}
+
+/* Desktop can stay side-by-side */
+@media (min-width: 900px) {
+  .layout, .container, .wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 28px;
+    align-items: center;
+  }
+}
