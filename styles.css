@@ -1,0 +1,121 @@
+:root{
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --line:#e5e7eb;
+  --primary:#2563eb;
+  --primary2:#0ea5e9;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: radial-gradient(1200px 600px at 20% 10%, #eef2ff, transparent),
+              radial-gradient(900px 500px at 90% 30%, #e0f2fe, transparent),
+              var(--bg);
+  color:var(--text);
+}
+
+.wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.card{
+  width:min(420px, 94vw);
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow: 0 12px 35px rgba(15,23,42,.10);
+  overflow:hidden;
+}
+
+.header{
+  padding:18px 18px 12px;
+  display:flex;
+  gap:14px;
+  align-items:center;
+}
+
+.avatar{
+  width:64px;height:64px;
+  border-radius:999px;
+  background:linear-gradient(135deg, var(--primary), var(--primary2));
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-weight:800;
+  letter-spacing:.5px;
+  border:3px solid #fff;
+  box-shadow: 0 8px 18px rgba(37,99,235,.25);
+}
+
+.title h1{
+  margin:0;
+  font-size:18px;
+  line-height:1.2;
+}
+.title .role{
+  margin-top:4px;
+  font-size:13px;
+  color:var(--muted);
+}
+.title .company{
+  margin-top:2px;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.divider{height:1px;background:var(--line);}
+
+.actions{
+  padding:14px 18px 18px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+}
+
+.btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:11px 12px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:700;
+  font-size:14px;
+  border:1px solid var(--line);
+  color:var(--text);
+  background:#fff;
+  transition:.15s transform ease, .15s box-shadow ease;
+}
+.btn:hover{transform:translateY(-1px); box-shadow: 0 10px 20px rgba(15,23,42,.08);}
+.btn.primary{
+  background:linear-gradient(135deg, var(--primary), var(--primary2));
+  color:#fff;
+  border:none;
+}
+.small{
+  padding:0 18px 18px;
+  color:var(--muted);
+  font-size:12px;
+  text-align:center;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#f1f5f9;
+  color:#334155;
+  font-size:12px;
+  margin:0 18px 14px;
+}
