@@ -1,74 +1,72 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Emarath Digital ID</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emarath — Digital Card</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <div class="page">
-    <div class="shell">
-      <div class="card">
+  <main class="page">
+    <div class="card-shell">
+      <div class="glass-card" id="card">
         <div class="hero">
-          <img id="photo" alt="Profile photo" />
-          <div class="brand">
-            <img src="assets/logo.png" alt="Emarath"/>
-          </div>
+          <img id="profileImage" class="profileImage" alt="Profile photo" />
           <div class="wave"></div>
+          <img class="mini-logo" src="./assets/brand/logo.png" alt="Emarath" />
         </div>
 
         <div class="content">
-          <h1 class="name" id="name"></h1>
-          <p class="role" id="role"></p>
-          <p class="company" id="company"></p>
-
-          <button class="primary" id="saveBtn">
-            ⬇︎ <span>Save Contact</span>
-          </button>
-
-          <div class="rows">
-            <div class="row" id="emailRow">
-              <a id="emailLink" href="#">
-                <div class="icon"><img src="assets/icons/mail.svg" alt=""></div>
-                <div class="meta">
-                  <p class="label">Email</p>
-                  <p class="value" id="email"></p>
-                </div>
-              </a>
-            </div>
-
-            <div class="row" id="phoneRow">
-              <a id="phoneLink" href="#">
-                <div class="icon"><img src="assets/icons/phone.svg" alt=""></div>
-                <div class="meta">
-                  <p class="label">Phone</p>
-                  <p class="value" id="phone"></p>
-                </div>
-              </a>
-            </div>
-
-            <div class="row" id="waRow">
-              <a id="waLink" href="#">
-                <div class="icon"><img src="assets/icons/wa.svg" alt=""></div>
-                <div class="meta">
-                  <p class="label">WhatsApp</p>
-                  <p class="value" id="waText">Message on WhatsApp</p>
-                </div>
-              </a>
+          <div class="head">
+            <div class="divider"></div>
+            <div class="head-text">
+              <h1 class="name" id="name">Name</h1>
+              <div class="role" id="role">Role</div>
+              <div class="company" id="company">Company</div>
             </div>
           </div>
 
-          <div class="smallnote" id="footerCompany"></div>
-        </div>
+          <div class="cta-row">
+            <button class="btn primary" id="saveBtn" type="button">
+              ⬇ Save Contact
+            </button>
+            <button class="btn ghost" id="shareBtn" type="button">
+              ↗ Share
+            </button>
+          </div>
 
-        <div class="footer">
-          <button class="share" id="shareBtn">↗︎ Share</button>
+          <div class="info">
+            <a class="info-item" id="emailLink" href="#">
+              <span class="icon">✉️</span>
+              <div class="info-text">
+                <div class="label">Email</div>
+                <div class="value" id="email">-</div>
+              </div>
+            </a>
+
+            <a class="info-item" id="phoneLink" href="#">
+              <span class="icon">📞</span>
+              <div class="info-text">
+                <div class="label">Phone</div>
+                <div class="value" id="phone">-</div>
+              </div>
+            </a>
+
+            <a class="info-item" id="waLink" href="#" target="_blank" rel="noopener">
+              <span class="icon">💬</span>
+              <div class="info-text">
+                <div class="label">WhatsApp</div>
+                <div class="value" id="waText">Message</div>
+              </div>
+            </a>
+          </div>
+
+          <div class="small-foot" id="footerCompany">Emarath Global Pvt Ltd</div>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 
-  <script src="card.js"></script>
+  <script src="./card.js"></script>
 </body>
 </html>
