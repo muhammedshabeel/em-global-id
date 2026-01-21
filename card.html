@@ -2,65 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Emarath — Digital Card</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emarath Digital ID</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="page">
-    <section class="card">
-      <div class="hero">
-        <img id="photo" class="heroImg" alt="Profile photo" />
-        <div class="wave"></div>
-        <div class="logoBadge">EG</div>
-      </div>
+    <div class="card-wrap">
+      <section class="card" aria-label="Digital business card">
+        <div class="hero">
+          <img id="photo" src="assets/photos/default.jpg" alt="Profile photo">
 
-      <div class="body">
-        <div class="nameBlock">
-          <div class="line"></div>
-          <div>
-            <h1 id="name" class="name">Name</h1>
-            <div id="role" class="role">Role</div>
-            <div id="company" class="company">Company</div>
+          <div class="wave"></div>
+
+          <!-- ✅ your logo location -->
+          <div class="brand" title="Emarath Global">
+            <img src="assets/brand/logo.jpg" alt="Emarath logo">
           </div>
         </div>
 
-        <div class="buttons">
-          <button id="saveBtn" class="btn primary" type="button">⬇ Save Contact</button>
-          <button id="shareBtn" class="btn ghost" type="button">↗ Share</button>
+        <div class="content">
+          <h1 class="name" id="name">Name</h1>
+          <p class="role" id="role">Role</p>
+          <p class="company" id="company">Company</p>
+
+          <div class="actions">
+            <button class="btn btn-primary" id="btnSave" type="button">⬇︎ Save Contact</button>
+            <button class="btn btn-ghost" id="btnShare" type="button">↗︎ Share</button>
+          </div>
+
+          <div class="rows" aria-label="Contact methods">
+            <a class="row" id="rowEmail" href="#">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </span>
+              <span class="meta">
+                <span class="label">Email</span>
+                <span class="value">—</span>
+              </span>
+            </a>
+
+            <a class="row" id="rowPhone" href="#">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.07 21 3 13.93 3 5a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.24 1.01l-2.2 2.2z"/></svg>
+              </span>
+              <span class="meta">
+                <span class="label">Phone</span>
+                <span class="value">—</span>
+              </span>
+            </a>
+
+            <a class="row" id="rowWA" href="#" target="_blank" rel="noopener">
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.9 11.9 0 0 0 12.07 0C5.5 0 .16 5.34.16 11.92c0 2.1.55 4.16 1.6 5.98L0 24l6.27-1.64a11.9 11.9 0 0 0 5.8 1.48h.01c6.58 0 11.92-5.34 11.92-11.92 0-3.18-1.24-6.17-3.48-8.44z"/></svg>
+              </span>
+              <span class="meta">
+                <span class="label">WhatsApp</span>
+                <span class="value">Message on WhatsApp</span>
+              </span>
+            </a>
+          </div>
+
+          <div class="footer">Emarath Global Pvt Ltd</div>
         </div>
-
-        <div class="rows">
-          <a id="emailLink" class="row" href="#">
-            <span class="icon">✉</span>
-            <div class="rowText">
-              <div class="label">Email</div>
-              <div id="emailText" class="value">-</div>
-            </div>
-          </a>
-
-          <a id="phoneLink" class="row" href="#">
-            <span class="icon">☎</span>
-            <div class="rowText">
-              <div class="label">Phone</div>
-              <div id="phoneText" class="value">-</div>
-            </div>
-          </a>
-
-          <a id="waLink" class="row" href="#" target="_blank" rel="noopener">
-            <span class="icon">💬</span>
-            <div class="rowText">
-              <div class="label">WhatsApp</div>
-              <div id="waText" class="value">Message</div>
-            </div>
-          </a>
-        </div>
-
-        <footer class="foot" id="footerCompany">Emarath Global Pvt Ltd</footer>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 
-  <script src="./card.js"></script>
+  <script src="card.js"></script>
 </body>
 </html>

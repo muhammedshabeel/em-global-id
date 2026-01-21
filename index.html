@@ -2,25 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Emarath Global — Staff Cards</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emarath Staff Cards</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .list { width:min(520px, 92vw); padding:18px; }
+    .list h1 { margin:0 0 10px; font-size:22px; font-weight:900; }
+    .list p { margin:0 0 18px; color:#5b6b86; font-weight:800; }
+  </style>
 </head>
 <body>
-  <main class="home">
-    <div class="homeCard">
-      <h1>Emarath Global Pvt Ltd</h1>
-      <p>Staff Digital Cards</p>
+  <main class="page">
+    <div class="list card">
+      <h1>Emarath Staff Cards</h1>
+      <p>Open a staff profile:</p>
 
-      <div class="homeList">
-        <a href="./staff/ahamed-sijil/">Mr. Ahamed Sijil (CEO)</a>
-        <a href="./staff/jansiya-s/">Ms. Jansiya S (Financial Manager)</a>
-        <a href="./staff/shahabas-ali/">Mr. Shahabas Ali (BDM)</a>
-        <a href="./staff/arya-krishna/">Ms. Arya Krishna (HR Executive)</a>
-        <a href="./staff/jaseed/">Mr. Jaseed (Vice President)</a>
-        <a href="./staff/hasna-h/">Ms. Hasna H (CFM)</a>
-        <a href="./staff/saife/">Mr. Saife (Consultant)</a>
-      </div>
+      <a class="row" href="staff/ahamed-sijil/"><span class="meta"><span class="label">CEO</span><span class="value">Mr. Ahamed Sijil</span></span></a>
+      <a class="row" href="staff/jansiya-s/"><span class="meta"><span class="label">Finance</span><span class="value">Ms. Jansiya S</span></span></a>
+      <a class="row" href="staff/shahabas-ali/"><span class="meta"><span class="label">BDM</span><span class="value">Mr. Shahabas Ali</span></span></a>
+      <a class="row" href="staff/arya-krishna/"><span class="meta"><span class="label">HR</span><span class="value">Ms. Arya Krishna</span></span></a>
+      <a class="row" href="staff/jaseed/"><span class="meta"><span class="label">VP</span><span class="value">Mr. Jaseed</span></span></a>
+      <a class="row" href="staff/hasna-h/"><span class="meta"><span class="label">CFM</span><span class="value">Ms. Hasna H</span></span></a>
+      <a class="row" href="staff/saife/"><span class="meta"><span class="label">Consultant</span><span class="value">Mr. Saife</span></span></a>
     </div>
   </main>
 </body>

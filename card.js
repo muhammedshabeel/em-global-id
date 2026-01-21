@@ -1,11 +1,13 @@
-const PEOPLE = {
+const STAFF = {
   "ahamed-sijil": {
     name: "Mr. Ahamed Sijil",
     role: "Chief Executive Officer (CEO)",
     company: "Emarath Global Pvt Ltd",
     email: "ceo@emarathglobal.com",
     phone: "+91 81578 97198",
-    photo: "assets/photos/ahamed-sijil.jpg",
+    photo: "ahamed.jpg",
+    photoPos: "50% 18%",
+    whatsappText: "Hello Ahamed, I scanned your Emarath contact card."
   },
   "jansiya-s": {
     name: "Ms. Jansiya S",
@@ -13,7 +15,9 @@ const PEOPLE = {
     company: "Emarath Global Pvt Ltd",
     email: "financialmanager@emarathglobal.com",
     phone: "+91 81298 65032",
-    photo: "assets/photos/jansiya-s.jpg",
+    photo: "jansiya.jpg",
+    photoPos: "50% 18%",
+    whatsappText: "Hello Jansiya, I scanned your Emarath contact card."
   },
   "shahabas-ali": {
     name: "Mr. Shahabas Ali",
@@ -21,7 +25,9 @@ const PEOPLE = {
     company: "Emarath Global Pvt Ltd",
     email: "bdm@emarathglobal.com",
     phone: "+91 73064 94305",
-    photo: "assets/photos/shahabas-ali.jpg",
+    photo: "shahabas.jpg",
+    photoPos: "50% 18%",
+    whatsappText: "Hello Shahabas, I scanned your Emarath contact card."
   },
   "arya-krishna": {
     name: "Ms. Arya Krishna",
@@ -29,7 +35,9 @@ const PEOPLE = {
     company: "Emarath Global Pvt Ltd",
     email: "hr@emarathglobal.com",
     phone: "+91 85474 70653",
-    photo: "assets/photos/arya-krishna.jpg",
+    photo: "arya.jpg",
+    photoPos: "50% 18%",
+    whatsappText: "Hello Arya, I scanned your Emarath contact card."
   },
   "jaseed": {
     name: "Mr. Jaseed",
@@ -37,7 +45,9 @@ const PEOPLE = {
     company: "Emarath Global Pvt Ltd",
     email: "vp@emarathglobal.com",
     phone: "+91 70121 55575",
-    photo: "assets/photos/jaseed.jpg",
+    photo: "jaseed.jpg",
+    photoPos: "50% 18%",
+    whatsappText: "Hello Jaseed, I scanned your Emarath contact card."
   },
   "hasna-h": {
     name: "Ms. Hasna H",
@@ -45,7 +55,9 @@ const PEOPLE = {
     company: "Emarath Global Pvt Ltd",
     email: "cfm@emarathglobal.com",
     phone: "+91 75107 67713",
-    photo: "assets/photos/hasna-h.jpg",
+    photo: "hasna.jpg",
+    photoPos: "50% 18%",
+    whatsappText: "Hello Hasna, I scanned your Emarath contact card."
   },
   "saife": {
     name: "Mr. Saife",
@@ -53,111 +65,113 @@ const PEOPLE = {
     company: "Emarath Global Pvt Ltd",
     email: "",
     phone: "+91 97454 44800",
-    photo: "assets/photos/saife.jpg",
-  },
+    photo: "saife.jpg",
+    photoPos: "50% 18%",
+    whatsappText: "Hello Saife, I scanned your Emarath contact card."
+  }
 };
 
-function getId() {
-  const id = new URLSearchParams(location.search).get("id");
-  return (id || "ahamed-sijil").toLowerCase();
+function getParam(key){
+  return new URLSearchParams(location.search).get(key);
 }
 
-function digitsOnlyPhone(p) {
-  return (p || "").replace(/\D/g, "");
+function normalizePhone(phone){
+  return (phone || "").replace(/[^\d+]/g, "");
 }
 
-function vcard(p) {
+function buildVCard(person){
+  const tel = normalizePhone(person.phone);
   const lines = [
     "BEGIN:VCARD",
     "VERSION:3.0",
-    `FN:${p.name}`,
-    `ORG:${p.company}`,
-    p.role ? `TITLE:${p.role}` : "",
-    p.phone ? `TEL;TYPE=CELL:${p.phone}` : "",
-    p.email ? `EMAIL:${p.email}` : "",
-    "END:VCARD",
+    `FN:${person.name}`,
+    person.role ? `TITLE:${person.role}` : "",
+    person.company ? `ORG:${person.company}` : "",
+    tel ? `TEL;TYPE=CELL:${tel}` : "",
+    person.email ? `EMAIL;TYPE=INTERNET:${person.email}` : "",
+    "END:VCARD"
   ].filter(Boolean);
-
   return lines.join("\n");
 }
 
-function download(filename, text) {
-  const blob = new Blob([text], { type: "text/vcard;charset=utf-8" });
+function downloadVCard(person){
+  const blob = new Blob([buildVCard(person)], {type:"text/vcard;charset=utf-8"});
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = filename;
+  a.download = `${person.name.replace(/\s+/g,"-").toLowerCase()}.vcf`;
   document.body.appendChild(a);
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
 }
 
-function init() {
-  const id = getId();
-  const p = PEOPLE[id];
-
-  if (!p) {
-    document.body.innerHTML = `<div style="padding:22px;font-family:system-ui">
-      Invalid id: <b>${id}</b><br><br>
-      Example: <code>card.html?id=ahamed-sijil</code>
-    </div>`;
-    return;
-  }
-
-  // Text
-  document.getElementById("name").textContent = p.name;
-  document.getElementById("role").textContent = p.role;
-  document.getElementById("company").textContent = p.company;
-  document.getElementById("footerCompany").textContent = p.company;
-
-  // Photo
-  const img = document.getElementById("photo");
-  img.src = p.photo;
-  img.onerror = () => (img.src = "assets/photos/ahamed-sijil.jpg");
-
-  // Email
-  const emailLink = document.getElementById("emailLink");
-  const emailText = document.getElementById("emailText");
-  if (p.email) {
-    emailText.textContent = p.email;
-    emailLink.href = `mailto:${p.email}`;
-  } else {
-    emailText.textContent = "Not available";
-    emailLink.style.opacity = "0.6";
-    emailLink.style.pointerEvents = "none";
-  }
-
-  // Phone
-  const phoneLink = document.getElementById("phoneLink");
-  const phoneText = document.getElementById("phoneText");
-  phoneText.textContent = p.phone || "-";
-  phoneLink.href = p.phone ? `tel:${p.phone.replace(/\s+/g, "")}` : "#";
-
-  // WhatsApp
-  const waLink = document.getElementById("waLink");
-  const waText = document.getElementById("waText");
-  const wa = digitsOnlyPhone(p.phone);
-  waText.textContent = "Message on WhatsApp";
-  waLink.href = wa ? `https://wa.me/${wa}?text=${encodeURIComponent("Hi " + p.name + ",")}` : "#";
-
-  // Save contact
-  document.getElementById("saveBtn").addEventListener("click", () => {
-    const safe = id.replace(/[^\w-]+/g, "_");
-    download(`${safe}.vcf`, vcard(p));
-  });
-
-  // Share
-  document.getElementById("shareBtn").addEventListener("click", async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: p.name, text: `${p.name} — ${p.role}`, url: location.href });
-      } else {
-        await navigator.clipboard.writeText(location.href);
-        alert("Link copied");
-      }
-    } catch (e) {}
-  });
+function setText(id, value){
+  const el = document.getElementById(id);
+  if(el) el.textContent = value || "";
 }
 
-init();
+function setRow(id, label, value, href){
+  const row = document.getElementById(id);
+  if(!row) return;
+
+  row.querySelector(".label").textContent = label;
+  row.querySelector(".value").textContent = value || "";
+
+  if(href && value){
+    row.href = href;
+    row.style.display = "";
+  }else{
+    row.style.display = "none";
+  }
+}
+
+function init(){
+  const id = getParam("id") || "ahamed-sijil";
+  const person = STAFF[id] || STAFF["ahamed-sijil"];
+
+  setText("name", person.name);
+  setText("role", person.role);
+  setText("company", person.company);
+
+  const img = document.getElementById("photo");
+  const hero = document.querySelector(".hero");
+
+  // ✅ Use your photo folder + file names
+  const imgPath = `assets/photos/${person.photo || "default.jpg"}`;
+
+  if(img){
+    img.src = imgPath;
+    img.alt = `${person.name} photo`;
+    img.style.objectPosition = person.photoPos || "50% 18%";
+
+    img.onerror = () => {
+      img.src = "assets/photos/default.jpg";
+      img.style.objectPosition = "50% 18%";
+    };
+  }
+
+  const tel = normalizePhone(person.phone);
+  const waText = encodeURIComponent(person.whatsappText || "Hello");
+  const wa = tel ? `https://wa.me/${tel.replace("+","")}?text=${waText}` : "";
+
+  setRow("rowEmail", "Email", person.email, person.email ? `mailto:${person.email}` : "");
+  setRow("rowPhone", "Phone", person.phone, tel ? `tel:${tel}` : "");
+  setRow("rowWA", "WhatsApp", "Message on WhatsApp", wa);
+
+  document.getElementById("btnSave").onclick = () => downloadVCard(person);
+
+  document.getElementById("btnShare").onclick = async () => {
+    const shareUrl = location.href;
+    try{
+      if(navigator.share){
+        await navigator.share({ title: person.name, text: `${person.name} — ${person.company}`, url: shareUrl });
+      }else{
+        await navigator.clipboard.writeText(shareUrl);
+        alert("Link copied.");
+      }
+    }catch(e){}
+  };
+}
+
+document.addEventListener("DOMContentLoaded", init);
