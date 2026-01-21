@@ -1,3 +1,14 @@
+/* =========================================================
+   Emarath Staff Card - card.js
+   Works with:
+   - card.html?id=ahamed-sijil
+   - /staff/ahamed-sijil/ (if you use staff pages)
+   Folder structure:
+   /assets/photos/ahamed.jpg
+   /assets/brand/logo.jpg
+   ========================================================= */
+
+// ✅ Staff database (your details)
 const STAFF = {
   "ahamed-sijil": {
     name: "Mr. Ahamed Sijil",
@@ -5,173 +16,260 @@ const STAFF = {
     company: "Emarath Global Pvt Ltd",
     email: "ceo@emarathglobal.com",
     phone: "+91 81578 97198",
-    photo: "ahamed.jpg",
-    photoPos: "50% 18%",
-    whatsappText: "Hello Ahamed, I scanned your Emarath contact card."
+    whatsappText: "Message Ahamed",
+    photo: "assets/photos/ahamed.jpg",
   },
+
   "jansiya-s": {
     name: "Ms. Jansiya S",
     role: "Financial Manager",
     company: "Emarath Global Pvt Ltd",
     email: "financialmanager@emarathglobal.com",
     phone: "+91 81298 65032",
-    photo: "jansiya.jpg",
-    photoPos: "50% 18%",
-    whatsappText: "Hello Jansiya, I scanned your Emarath contact card."
+    whatsappText: "Message Jansiya",
+    photo: "assets/photos/jansiya.jpg",
   },
+
   "shahabas-ali": {
     name: "Mr. Shahabas Ali",
     role: "Business Development Manager",
     company: "Emarath Global Pvt Ltd",
     email: "bdm@emarathglobal.com",
     phone: "+91 73064 94305",
-    photo: "shahabas.jpg",
-    photoPos: "50% 18%",
-    whatsappText: "Hello Shahabas, I scanned your Emarath contact card."
+    whatsappText: "Message Shahabas",
+    photo: "assets/photos/shahabas.jpg",
   },
+
   "arya-krishna": {
     name: "Ms. Arya Krishna",
     role: "HR Executive",
     company: "Emarath Global Pvt Ltd",
     email: "hr@emarathglobal.com",
     phone: "+91 85474 70653",
-    photo: "arya.jpg",
-    photoPos: "50% 18%",
-    whatsappText: "Hello Arya, I scanned your Emarath contact card."
+    whatsappText: "Message Arya",
+    photo: "assets/photos/arya.jpg",
   },
+
   "jaseed": {
     name: "Mr. Jaseed",
     role: "Vice President",
     company: "Emarath Global Pvt Ltd",
     email: "vp@emarathglobal.com",
     phone: "+91 70121 55575",
-    photo: "jaseed.jpg",
-    photoPos: "50% 18%",
-    whatsappText: "Hello Jaseed, I scanned your Emarath contact card."
+    whatsappText: "Message Jaseed",
+    photo: "assets/photos/jaseed.jpg",
   },
+
   "hasna-h": {
     name: "Ms. Hasna H",
     role: "Cross Functional Manager (CFM)",
     company: "Emarath Global Pvt Ltd",
     email: "cfm@emarathglobal.com",
     phone: "+91 75107 67713",
-    photo: "hasna.jpg",
-    photoPos: "50% 18%",
-    whatsappText: "Hello Hasna, I scanned your Emarath contact card."
+    whatsappText: "Message Hasna",
+    photo: "assets/photos/hasna.jpg",
   },
+
   "saife": {
     name: "Mr. Saife",
     role: "Consultant",
     company: "Emarath Global Pvt Ltd",
     email: "",
     phone: "+91 97454 44800",
-    photo: "saife.jpg",
-    photoPos: "50% 18%",
-    whatsappText: "Hello Saife, I scanned your Emarath contact card."
-  }
+    whatsappText: "Message Saife",
+    photo: "assets/photos/saife.jpg",
+  },
 };
 
-function getParam(key){
-  return new URLSearchParams(location.search).get(key);
+// ✅ Default fallback (if wrong ID typed)
+const DEFAULT_CARD = {
+  name: "Emarath Staff",
+  role: "Digital ID",
+  company: "Emarath Global Pvt Ltd",
+  email: "info@emarathglobal.com",
+  phone: "",
+  whatsappText: "Message on WhatsApp",
+  photo: "assets/photos/default.jpg",
+};
+
+// ✅ Get staff ID from URL
+function getStaffId() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // ✅ Supports: card.html?id=ahamed-sijil
+  const idFromQuery = urlParams.get("id");
+  if (idFromQuery) return idFromQuery.trim().toLowerCase();
+
+  // ✅ Supports: /staff/ahamed-sijil/
+  const pathParts = window.location.pathname.split("/").filter(Boolean);
+  const staffIndex = pathParts.indexOf("staff");
+  if (staffIndex !== -1 && pathParts[staffIndex + 1]) {
+    return pathParts[staffIndex + 1].trim().toLowerCase();
+  }
+
+  return "";
 }
 
-function normalizePhone(phone){
-  return (phone || "").replace(/[^\d+]/g, "");
+// ✅ Safe element selector
+function el(id) {
+  return document.getElementById(id);
 }
 
-function buildVCard(person){
-  const tel = normalizePhone(person.phone);
-  const lines = [
+// ✅ Build WhatsApp link
+function buildWhatsAppLink(phone, name) {
+  const cleanPhone = (phone || "").replace(/[^\d+]/g, "");
+  const msg = encodeURIComponent(`Hi ${name},`);
+  if (!cleanPhone) return "#";
+  return `https://wa.me/${cleanPhone.replace("+", "")}?text=${msg}`;
+}
+
+// ✅ Create vCard file content (Download Contact)
+function buildVCard(data) {
+  const cleanPhone = (data.phone || "").replace(/\s+/g, "");
+  return [
     "BEGIN:VCARD",
     "VERSION:3.0",
-    `FN:${person.name}`,
-    person.role ? `TITLE:${person.role}` : "",
-    person.company ? `ORG:${person.company}` : "",
-    tel ? `TEL;TYPE=CELL:${tel}` : "",
-    person.email ? `EMAIL;TYPE=INTERNET:${person.email}` : "",
-    "END:VCARD"
-  ].filter(Boolean);
-  return lines.join("\n");
+    `FN:${data.name || ""}`,
+    `ORG:${data.company || ""}`,
+    `TITLE:${data.role || ""}`,
+    data.email ? `EMAIL;TYPE=INTERNET:${data.email}` : "",
+    cleanPhone ? `TEL;TYPE=CELL:${cleanPhone}` : "",
+    "END:VCARD",
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
-function downloadVCard(person){
-  const blob = new Blob([buildVCard(person)], {type:"text/vcard;charset=utf-8"});
+// ✅ Download vCard
+function downloadVCard(data) {
+  const vcardText = buildVCard(data);
+  const blob = new Blob([vcardText], { type: "text/vcard" });
   const url = URL.createObjectURL(blob);
+
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${person.name.replace(/\s+/g,"-").toLowerCase()}.vcf`;
+
+  const safeName = (data.name || "contact")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  a.download = `${safeName}.vcf`;
   document.body.appendChild(a);
   a.click();
-  a.remove();
+  document.body.removeChild(a);
+
   URL.revokeObjectURL(url);
 }
 
-function setText(id, value){
-  const el = document.getElementById(id);
-  if(el) el.textContent = value || "";
-}
+// ✅ Main render function
+function renderCard() {
+  const staffId = getStaffId();
+  const data = STAFF[staffId] || DEFAULT_CARD;
 
-function setRow(id, label, value, href){
-  const row = document.getElementById(id);
-  if(!row) return;
+  // ✅ Elements from card.html
+  const profilePhoto = el("profilePhoto");
+  const fullName = el("fullName");
+  const role = el("role");
+  const company = el("company");
 
-  row.querySelector(".label").textContent = label;
-  row.querySelector(".value").textContent = value || "";
+  const emailRow = el("emailRow");
+  const emailText = el("emailText");
 
-  if(href && value){
-    row.href = href;
-    row.style.display = "";
-  }else{
-    row.style.display = "none";
-  }
-}
+  const phoneRow = el("phoneRow");
+  const phoneText = el("phoneText");
 
-function init(){
-  const id = getParam("id") || "ahamed-sijil";
-  const person = STAFF[id] || STAFF["ahamed-sijil"];
+  const waRow = el("waRow");
+  const waText = el("waText");
 
-  setText("name", person.name);
-  setText("role", person.role);
-  setText("company", person.company);
+  const saveBtn = el("saveBtn");
+  const shareBtn = el("shareBtn");
 
-  const img = document.getElementById("photo");
-  const hero = document.querySelector(".hero");
-
-  // ✅ Use your photo folder + file names
-  const imgPath = `assets/photos/${person.photo || "default.jpg"}`;
-
-  if(img){
-    img.src = imgPath;
-    img.alt = `${person.name} photo`;
-    img.style.objectPosition = person.photoPos || "50% 18%";
-
-    img.onerror = () => {
-      img.src = "assets/photos/default.jpg";
-      img.style.objectPosition = "50% 18%";
-    };
+  // ✅ Prevent blank screen if HTML IDs missing
+  if (!profilePhoto || !fullName || !role || !company) {
+    console.error("❌ card.html missing required IDs (profilePhoto/fullName/role/company)");
+    return;
   }
 
-  const tel = normalizePhone(person.phone);
-  const waText = encodeURIComponent(person.whatsappText || "Hello");
-  const wa = tel ? `https://wa.me/${tel.replace("+","")}?text=${waText}` : "";
+  // ✅ Fill data
+  fullName.textContent = data.name || "";
+  role.textContent = data.role || "";
+  company.textContent = data.company || "";
 
-  setRow("rowEmail", "Email", person.email, person.email ? `mailto:${person.email}` : "");
-  setRow("rowPhone", "Phone", person.phone, tel ? `tel:${tel}` : "");
-  setRow("rowWA", "WhatsApp", "Message on WhatsApp", wa);
+  // ✅ Photo load (fixes broken image)
+  profilePhoto.src = data.photo || DEFAULT_CARD.photo;
 
-  document.getElementById("btnSave").onclick = () => downloadVCard(person);
-
-  document.getElementById("btnShare").onclick = async () => {
-    const shareUrl = location.href;
-    try{
-      if(navigator.share){
-        await navigator.share({ title: person.name, text: `${person.name} — ${person.company}`, url: shareUrl });
-      }else{
-        await navigator.clipboard.writeText(shareUrl);
-        alert("Link copied.");
-      }
-    }catch(e){}
+  // ✅ If photo missing show default
+  profilePhoto.onerror = () => {
+    profilePhoto.src = DEFAULT_CARD.photo;
   };
+
+  // ✅ Email
+  if (data.email) {
+    emailText.textContent = data.email;
+    emailRow.href = `mailto:${data.email}`;
+    emailRow.style.display = "flex";
+  } else {
+    emailRow.style.display = "none";
+  }
+
+  // ✅ Phone
+  if (data.phone) {
+    phoneText.textContent = data.phone;
+    phoneRow.href = `tel:${data.phone.replace(/\s+/g, "")}`;
+    phoneRow.style.display = "flex";
+  } else {
+    phoneRow.style.display = "none";
+  }
+
+  // ✅ WhatsApp
+  if (data.phone) {
+    waText.textContent = data.whatsappText || "Message on WhatsApp";
+    waRow.href = buildWhatsAppLink(data.phone, data.name);
+    waRow.style.display = "flex";
+  } else {
+    waRow.style.display = "none";
+  }
+
+  // ✅ Save Contact button
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => downloadVCard(data));
+  }
+
+  // ✅ Share button
+  if (shareBtn) {
+    shareBtn.addEventListener("click", async () => {
+      const shareUrl = window.location.href;
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: data.name,
+            text: `${data.name} - ${data.role}`,
+            url: shareUrl,
+          });
+        } catch (e) {
+          console.log("Share cancelled");
+        }
+      } else {
+        // fallback copy
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          alert("✅ Link copied!");
+        } catch (err) {
+          alert("❌ Copy failed. Please copy manually:\n" + shareUrl);
+        }
+      }
+    });
+  }
 }
 
-document.addEventListener("DOMContentLoaded", init);
+// ✅ Run after page loads
+document.addEventListener("DOMContentLoaded", renderCard);
+
+// ✅ Optional: make callable from console
+window.downloadVCard = () => {
+  const staffId = getStaffId();
+  const data = STAFF[staffId] || DEFAULT_CARD;
+  downloadVCard(data);
+};

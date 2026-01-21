@@ -89,24 +89,31 @@ body{
    ========================================================= */
 .brand{
   position:absolute;
-  right:14px;
-  bottom:14px;
-  width:46px;
-  height:46px;
-  border-radius:14px;
-  background: rgba(255,255,255,.72);
-  border:1px solid rgba(255,255,255,.55);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  display:grid;
-  place-items:center;
-  box-shadow: 0 10px 30px rgba(11,19,36,.16);
-  overflow:hidden;
+  right:16px;
+  bottom:-18px;
+
+  width:64px;
+  height:64px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255,255,255,0.65);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+
+  z-index: 5;
+  pointer-events:none;
 }
 
 .brand img{
-  width:30px;
-  height:30px;
+  width:42px;
+  height:42px;
   object-fit:contain;
 }
 
