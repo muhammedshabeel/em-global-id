@@ -245,3 +245,9 @@ body{
   .hero{ height: 320px; }
   .actions{ grid-template-columns: 1fr; }
 }
+.icon-wa{
+  background: rgba(34, 197, 94, 0.14);
+}
+.icon-wa svg{
+  fill: #22c55e;
+}
