@@ -2,69 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Emarath — Digital Card</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <main class="page">
-    <div class="card-shell">
-      <div class="glass-card" id="card">
-        <div class="hero">
-          <img id="profileImage" class="profileImage" alt="Profile photo" />
-          <div class="wave"></div>
-          <img class="mini-logo" src="./assets/brand/logo.png" alt="Emarath" />
-        </div>
-
-        <div class="content">
-          <div class="head">
-            <div class="divider"></div>
-            <div class="head-text">
-              <h1 class="name" id="name">Name</h1>
-              <div class="role" id="role">Role</div>
-              <div class="company" id="company">Company</div>
-            </div>
-          </div>
-
-          <div class="cta-row">
-            <button class="btn primary" id="saveBtn" type="button">
-              ⬇ Save Contact
-            </button>
-            <button class="btn ghost" id="shareBtn" type="button">
-              ↗ Share
-            </button>
-          </div>
-
-          <div class="info">
-            <a class="info-item" id="emailLink" href="#">
-              <span class="icon">✉️</span>
-              <div class="info-text">
-                <div class="label">Email</div>
-                <div class="value" id="email">-</div>
-              </div>
-            </a>
-
-            <a class="info-item" id="phoneLink" href="#">
-              <span class="icon">📞</span>
-              <div class="info-text">
-                <div class="label">Phone</div>
-                <div class="value" id="phone">-</div>
-              </div>
-            </a>
-
-            <a class="info-item" id="waLink" href="#" target="_blank" rel="noopener">
-              <span class="icon">💬</span>
-              <div class="info-text">
-                <div class="label">WhatsApp</div>
-                <div class="value" id="waText">Message</div>
-              </div>
-            </a>
-          </div>
-
-          <div class="small-foot" id="footerCompany">Emarath Global Pvt Ltd</div>
-        </div>
+    <section class="card">
+      <div class="hero">
+        <img id="photo" class="heroImg" alt="Profile photo" />
+        <div class="wave"></div>
+        <div class="logoBadge">EG</div>
       </div>
-    </div>
+
+      <div class="body">
+        <div class="nameBlock">
+          <div class="line"></div>
+          <div>
+            <h1 id="name" class="name">Name</h1>
+            <div id="role" class="role">Role</div>
+            <div id="company" class="company">Company</div>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button id="saveBtn" class="btn primary" type="button">⬇ Save Contact</button>
+          <button id="shareBtn" class="btn ghost" type="button">↗ Share</button>
+        </div>
+
+        <div class="rows">
+          <a id="emailLink" class="row" href="#">
+            <span class="icon">✉</span>
+            <div class="rowText">
+              <div class="label">Email</div>
+              <div id="emailText" class="value">-</div>
+            </div>
+          </a>
+
+          <a id="phoneLink" class="row" href="#">
+            <span class="icon">☎</span>
+            <div class="rowText">
+              <div class="label">Phone</div>
+              <div id="phoneText" class="value">-</div>
+            </div>
+          </a>
+
+          <a id="waLink" class="row" href="#" target="_blank" rel="noopener">
+            <span class="icon">💬</span>
+            <div class="rowText">
+              <div class="label">WhatsApp</div>
+              <div id="waText" class="value">Message</div>
+            </div>
+          </a>
+        </div>
+
+        <footer class="foot" id="footerCompany">Emarath Global Pvt Ltd</footer>
+      </div>
+    </section>
   </main>
 
   <script src="./card.js"></script>
