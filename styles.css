@@ -13,7 +13,6 @@
 
 *{box-sizing:border-box}
 html,body{height:100%}
-
 body{
   margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
@@ -43,18 +42,15 @@ body{
   overflow:hidden;
   background: var(--card);
   border: 1px solid rgba(255,255,255,.45);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-/* =========================================================
-   HERO PHOTO AREA (TOP)
-   - NO ARCH/WAVE now
-   ========================================================= */
+/* HERO IMAGE */
 .hero{
   position:relative;
   height: 360px;
-  background: #000;
+  background: linear-gradient(180deg, rgba(37,99,235,.18), rgba(255,255,255,0));
 }
 
 .hero img{
@@ -63,69 +59,39 @@ body{
   width:100%;
   height:100%;
   object-fit:cover;
-  object-position: 50% 12%;
+  /* Focus on face */
+  object-position: 50% 20%;
   transform: scale(1.02);
 }
 
-/* ✅ removed the white arch overlay */
-.wave{ display:none; }
-
-/* nice fade for readability (premium feel) */
-.hero::after{
-  content:"";
-  position:absolute;
-  left:0; right:0; bottom:0;
-  height:160px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0) 0%,
-    rgba(0,0,0,0.18) 50%,
-    rgba(0,0,0,0.38) 100%
-  );
-}
-
-/* =========================================================
-   BRAND LOGO ICON on photo (right side)
-   ========================================================= */
+/* BRAND LOGO over image - no background */
 .brand{
   position:absolute;
-  right:16px;
-  bottom:-18px;
-
-  width:64px;
-  height:64px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background: rgba(255,255,255,0.65);
-  border: 1px solid rgba(255,255,255,0.65);
-  border-radius: 18px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-
-  z-index: 5;
+  right:14px;
+  bottom:14px;
+  width:70px;
+  height:70px;
+  display:grid;
+  place-items:center;
   pointer-events:none;
 }
 
-.brand img{
-  width:42px;
-  height:42px;
-  object-fit:contain;
+.brand--nobg{
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
-/* =========================================================
-   CONTENT AREA (GLASSY)
-   ========================================================= */
+.brand img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  filter: drop-shadow(0 10px 18px rgba(11,19,36,.25));
+}
+
 .content{
   padding: 18px 18px 16px;
-  background: rgba(255,255,255,.78);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-top: 1px solid rgba(255,255,255,.55);
+  background:#fff;
 }
 
 .name{
@@ -138,7 +104,7 @@ body{
 
 .role{
   margin:6px 0 0;
-  font-weight:900;
+  font-weight:800;
   color:#111a2e;
   font-size:14px;
 }
@@ -148,12 +114,9 @@ body{
   color:var(--muted);
   font-style:italic;
   font-size:14px;
-  font-weight:800;
+  font-weight:700;
 }
 
-/* =========================================================
-   BUTTONS
-   ========================================================= */
 .actions{
   margin-top:14px;
   display:grid;
@@ -177,28 +140,26 @@ body{
   user-select:none;
 }
 
+.btn .btn-ic{
+  font-weight:900;
+}
+
 .btn-primary{
   background: linear-gradient(180deg, var(--blue), var(--blue2));
   color:#fff;
-  box-shadow: 0 10px 30px rgba(37,99,235,.30);
+  box-shadow: 0 10px 30px rgba(37,99,235,.28);
 }
 .btn-primary:hover{ transform: translateY(-1px) }
 .btn-primary:active{ transform: translateY(0px) scale(.99) }
 
 .btn-ghost{
-  background: rgba(255,255,255,.9);
+  background:#fff;
   border:1px solid #e6edf8;
   color:#0b1324;
 }
-.btn-ghost:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 10px 30px rgba(11,19,36,.08);
-}
+.btn-ghost:hover{ transform: translateY(-1px); box-shadow: 0 10px 30px rgba(11,19,36,.08) }
 .btn-ghost:active{ transform: translateY(0px) scale(.99) }
 
-/* =========================================================
-   CONTACT ROWS
-   ========================================================= */
 .rows{
   margin-top:12px;
   display:grid;
@@ -212,7 +173,7 @@ body{
   padding:12px 12px;
   border-radius:16px;
   border:1px solid #edf2ff;
-  background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(251,253,255,.94));
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
   cursor:pointer;
   text-decoration:none;
   color:inherit;
@@ -236,10 +197,14 @@ body{
   flex: 0 0 auto;
 }
 
-.icon svg{
-  width:20px;
-  height:20px;
-  fill: #2563eb;
+.icon svg{ width:20px; height:20px; fill: #2563eb; }
+
+/* WhatsApp brand */
+.icon-wa{
+  background: rgba(34, 197, 94, 0.14);
+}
+.icon-wa svg{
+  fill: #22c55e;
 }
 
 .row .meta{
@@ -247,13 +212,11 @@ body{
   flex-direction:column;
   min-width:0;
 }
-
 .meta .label{
   font-size:12px;
   color:var(--muted);
-  font-weight:900;
+  font-weight:800;
 }
-
 .meta .value{
   font-size:14px;
   font-weight:900;
@@ -262,22 +225,23 @@ body{
   white-space:nowrap;
 }
 
-/* =========================================================
-   FOOTER (small)
-   ========================================================= */
+/* FOOTER HIGHLIGHT */
 .footer{
-  margin-top:12px;
+  margin-top:14px;
   text-align:center;
-  color:#8aa0c6;
-  font-size:12px;
-  font-weight:800;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.3px;
+  color:#1d4ed8;
+  text-transform:uppercase;
+  padding:8px 10px;
+  border-radius:14px;
+  background: rgba(37,99,235,.08);
+  border: 1px solid rgba(37,99,235,.15);
 }
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+/* Mobile */
 @media (max-width: 420px){
   .hero{ height: 320px; }
   .actions{ grid-template-columns: 1fr; }
-  .card-wrap{ width: min(390px, 94vw); }
 }

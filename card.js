@@ -1,14 +1,14 @@
-/* card.js — Emarath Staff Card renderer (GitHub Pages friendly) */
 (() => {
-  // ---- 1) Staff data (slug = URL id) ----
-  const STAFF = {
+  const $ = (id) => document.getElementById(id);
+
+  const staff = {
     "ahamed-sijil": {
       name: "Mr. Ahamed Sijil",
       role: "Chief Executive Officer (CEO)",
       company: "Emarath Global Pvt Ltd",
       email: "ceo@emarathglobal.com",
       phone: "+91 81578 97198",
-      waText: "Message on WhatsApp",
+      waText: "Message Ahamed",
       photo: "assets/photos/ahamed.jpg",
     },
     "jansiya-s": {
@@ -17,7 +17,7 @@
       company: "Emarath Global Pvt Ltd",
       email: "financialmanager@emarathglobal.com",
       phone: "+91 81298 65032",
-      waText: "Message on WhatsApp",
+      waText: "Message Jansiya",
       photo: "assets/photos/jansiya.jpg",
     },
     "shahabas-ali": {
@@ -26,7 +26,7 @@
       company: "Emarath Global Pvt Ltd",
       email: "bdm@emarathglobal.com",
       phone: "+91 73064 94305",
-      waText: "Message on WhatsApp",
+      waText: "Message Shahabas",
       photo: "assets/photos/shahabas.jpg",
     },
     "arya-krishna": {
@@ -35,7 +35,7 @@
       company: "Emarath Global Pvt Ltd",
       email: "hr@emarathglobal.com",
       phone: "+91 85474 70653",
-      waText: "Message on WhatsApp",
+      waText: "Message Arya",
       photo: "assets/photos/arya.jpg",
     },
     "jaseed": {
@@ -44,7 +44,7 @@
       company: "Emarath Global Pvt Ltd",
       email: "vp@emarathglobal.com",
       phone: "+91 70121 55575",
-      waText: "Message on WhatsApp",
+      waText: "Message Jaseed",
       photo: "assets/photos/jaseed.jpg",
     },
     "hasna-h": {
@@ -53,7 +53,7 @@
       company: "Emarath Global Pvt Ltd",
       email: "cfm@emarathglobal.com",
       phone: "+91 75107 67713",
-      waText: "Message on WhatsApp",
+      waText: "Message Hasna",
       photo: "assets/photos/hasna.jpg",
     },
     "saife": {
@@ -62,207 +62,127 @@
       company: "Emarath Global Pvt Ltd",
       email: "",
       phone: "+91 97454 44800",
-      waText: "Message on WhatsApp",
+      waText: "Message Saife",
       photo: "assets/photos/saife.jpg",
     },
   };
 
-  const DEFAULT_PHOTO = "assets/photos/default.jpg";
-
-  // ---- 2) Helpers ----
-  const $ = (id) => document.getElementById(id);
-
-  function getSlug() {
-    // Prefer ?id=...
-    const url = new URL(window.location.href);
-    const id = (url.searchParams.get("id") || "").trim();
-    if (id) return id;
-
-    // Fallback: /staff/<slug>/
-    const parts = window.location.pathname.split("/").filter(Boolean);
-    const staffIndex = parts.indexOf("staff");
-    if (staffIndex >= 0 && parts[staffIndex + 1]) return parts[staffIndex + 1];
-
-    return "";
+  function getId() {
+    const p = new URLSearchParams(window.location.search);
+    return (p.get("id") || "").trim().toLowerCase();
   }
 
   function digitsOnly(phone) {
-    return (phone || "").replace(/[^\d]/g, "");
+    return phone.replace(/[^\d]/g, "");
   }
 
-  function safeText(el, value, fallback = "—") {
-    if (!el) return;
-    el.textContent = value && String(value).trim() ? value : fallback;
+  function setLinkOrDisable(anchorEl, href, valueEl, valueText) {
+    if (!href) {
+      anchorEl.href = "javascript:void(0)";
+      anchorEl.style.opacity = "0.55";
+      anchorEl.style.pointerEvents = "none";
+      if (valueEl) valueEl.textContent = valueText || "—";
+      return;
+    }
+    anchorEl.href = href;
+    anchorEl.style.opacity = "1";
+    anchorEl.style.pointerEvents = "auto";
+    if (valueEl) valueEl.textContent = valueText || "";
   }
 
-  function showRow(rowEl, show) {
-    if (!rowEl) return;
-    rowEl.style.display = show ? "" : "none";
-  }
-
-  function setHref(aEl, href) {
-    if (!aEl) return;
-    aEl.setAttribute("href", href);
-  }
-
-  function makeVCard(person) {
-    // Very simple vCard 3.0
-    const n = (person.name || "").replace(/\s+/g, " ").trim();
-    const org = (person.company || "").trim();
-    const title = (person.role || "").trim();
-    const email = (person.email || "").trim();
-    const tel = (person.phone || "").trim();
-
+  function buildVCard(person) {
     const lines = [
       "BEGIN:VCARD",
       "VERSION:3.0",
-      `FN:${n}`,
-      org ? `ORG:${org}` : "",
-      title ? `TITLE:${title}` : "",
-      email ? `EMAIL;TYPE=INTERNET:${email}` : "",
-      tel ? `TEL;TYPE=CELL:${tel}` : "",
-      "END:VCARD",
-    ].filter(Boolean);
+      `FN:${person.name}`,
+      `ORG:${person.company}`,
+      `TITLE:${person.role}`,
+    ];
 
-    return lines.join("\n");
+    if (person.email) lines.push(`EMAIL;TYPE=INTERNET:${person.email}`);
+    if (person.phone) lines.push(`TEL;TYPE=CELL:${person.phone}`);
+
+    // IMPORTANT: vCard must end properly
+    lines.push("END:VCARD");
+    return lines.join("\r\n");
   }
 
-  async function copyToClipboard(text) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch {
-      return false;
-    }
+  function downloadVCard(person) {
+    const vcard = buildVCard(person);
+    const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${person.name.replace(/\s+/g, "-").toLowerCase()}.vcf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
   }
 
-  // ---- 3) Render ----
-  function render() {
-    const slug = getSlug();
-    const person = STAFF[slug];
+  function shareCard(person) {
+    const url = window.location.href;
+    const text = `${person.name} — ${person.role}\n${url}`;
 
-    // Elements (must match card.html IDs)
-    const profilePhoto = $("profilePhoto");
-    const fullName = $("fullName");
-    const role = $("role");
-    const company = $("company");
-
-    const saveBtn = $("saveBtn");
-    const shareBtn = $("shareBtn");
-
-    const emailRow = $("emailRow");
-    const emailText = $("emailText");
-
-    const phoneRow = $("phoneRow");
-    const phoneText = $("phoneText");
-
-    const waRow = $("waRow");
-    const waText = $("waText");
-
-    // If slug not found, show a hard truth fallback
-    if (!person) {
-      safeText(fullName, "Not found");
-      safeText(role, "Invalid staff id");
-      safeText(company, "Emarath Global Pvt Ltd");
-      if (profilePhoto) profilePhoto.src = DEFAULT_PHOTO;
-
-      showRow(emailRow, false);
-      showRow(phoneRow, false);
-      showRow(waRow, false);
-
-      if (saveBtn) saveBtn.disabled = true;
+    if (navigator.share) {
+      navigator.share({ title: person.name, text, url }).catch(() => {});
       return;
     }
 
-    // Text
-    safeText(fullName, person.name);
-    safeText(role, person.role);
-    safeText(company, person.company);
-
-    // Photo (force correct image + face crop)
-    if (profilePhoto) {
-      profilePhoto.src = person.photo || DEFAULT_PHOTO;
-
-      // If image fails, fallback to default
-      profilePhoto.onerror = () => {
-        profilePhoto.onerror = null;
-        profilePhoto.src = DEFAULT_PHOTO;
-      };
-    }
-
-    // Email row
-    const hasEmail = !!(person.email && person.email.trim());
-    showRow(emailRow, hasEmail);
-    if (hasEmail) {
-      safeText(emailText, person.email);
-      setHref(emailRow, `mailto:${person.email}`);
-    }
-
-    // Phone row
-    const hasPhone = !!(person.phone && person.phone.trim());
-    showRow(phoneRow, hasPhone);
-    if (hasPhone) {
-      safeText(phoneText, person.phone);
-      setHref(phoneRow, `tel:${digitsOnly(person.phone)}`);
-    }
-
-    // WhatsApp row
-    showRow(waRow, hasPhone);
-    if (hasPhone) {
-      safeText(waText, person.waText || "Message on WhatsApp");
-      const waNumber = digitsOnly(person.phone);
-      setHref(waRow, `https://wa.me/${waNumber}`);
-    }
-
-    // Save Contact button
-    if (saveBtn) {
-      saveBtn.disabled = false;
-      saveBtn.onclick = () => {
-        const vcf = makeVCard(person);
-        const blob = new Blob([vcf], { type: "text/vcard;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${slug}.vcf`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-
-        setTimeout(() => URL.revokeObjectURL(url), 500);
-      };
-    }
-
-    // Share button
-    if (shareBtn) {
-      shareBtn.onclick = async () => {
-        const shareUrl = window.location.href;
-
-        if (navigator.share) {
-          try {
-            await navigator.share({
-              title: person.name,
-              text: `${person.name} — ${person.role}`,
-              url: shareUrl,
-            });
-            return;
-          } catch {
-            // fall through to clipboard
-          }
-        }
-
-        const ok = await copyToClipboard(shareUrl);
-        shareBtn.textContent = ok ? "✓ Copied" : "Copy failed";
-        setTimeout(() => (shareBtn.textContent = "↗ Share"), 1200);
-      };
-    }
+    // fallback copy
+    navigator.clipboard?.writeText(url).then(() => {
+      alert("Link copied!");
+    }).catch(() => {
+      prompt("Copy this link:", url);
+    });
   }
 
-  // ---- 4) Boot ----
-  // Ensure DOM is ready even if script is not deferred
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", render);
-  } else {
-    render();
+  function boot() {
+    const id = getId();
+    const person = staff[id];
+
+    // fallback
+    if (!person) {
+      $("name").textContent = "Not found";
+      $("role").textContent = "—";
+      $("company").textContent = "Emarath Global Pvt Ltd";
+      $("profileImg").src = "assets/photos/default.jpg";
+      $("footerText").textContent = "EMARATH GLOBAL PRIVATE LIMITED";
+      return;
+    }
+
+    // Set text
+    $("name").textContent = person.name;
+    $("role").textContent = person.role;
+    $("company").textContent = person.company || "Emarath Global Pvt Ltd";
+    $("footerText").textContent = "EMARATH GLOBAL PRIVATE LIMITED";
+
+    // Profile image (show face properly via CSS object-position)
+    const img = $("profileImg");
+    img.src = person.photo || "assets/photos/default.jpg";
+    img.onerror = () => { img.src = "assets/photos/default.jpg"; };
+
+    // Email
+    const emailHref = person.email ? `mailto:${person.email}` : "";
+    setLinkOrDisable($("emailRow"), emailHref, $("emailVal"), person.email || "—");
+
+    // Phone
+    const phoneHref = person.phone ? `tel:${digitsOnly(person.phone)}` : "";
+    setLinkOrDisable($("phoneRow"), phoneHref, $("phoneVal"), person.phone || "—");
+
+    // WhatsApp
+    const phoneDigits = person.phone ? digitsOnly(person.phone) : "";
+    const waMessage = encodeURIComponent(`Hi ${person.name},`);
+    const waHref = phoneDigits ? `https://wa.me/${phoneDigits}?text=${waMessage}` : "";
+    $("waVal").textContent = person.waText || "Message on WhatsApp";
+    setLinkOrDisable($("waRow"), waHref, null, null);
+
+    // Buttons
+    $("saveBtn").onclick = () => downloadVCard(person);
+    $("shareBtn").onclick = () => shareCard(person);
   }
+
+  document.addEventListener("DOMContentLoaded", boot);
 })();
