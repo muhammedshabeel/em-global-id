@@ -1,275 +1,268 @@
-/* =========================================================
-   Emarath Staff Card - card.js
-   Works with:
-   - card.html?id=ahamed-sijil
-   - /staff/ahamed-sijil/ (if you use staff pages)
-   Folder structure:
-   /assets/photos/ahamed.jpg
-   /assets/brand/logo.jpg
-   ========================================================= */
-
-// ✅ Staff database (your details)
-const STAFF = {
-  "ahamed-sijil": {
-    name: "Mr. Ahamed Sijil",
-    role: "Chief Executive Officer (CEO)",
-    company: "Emarath Global Pvt Ltd",
-    email: "ceo@emarathglobal.com",
-    phone: "+91 81578 97198",
-    whatsappText: "Message Ahamed",
-    photo: "assets/photos/ahamed.jpg",
-  },
-
-  "jansiya-s": {
-    name: "Ms. Jansiya S",
-    role: "Financial Manager",
-    company: "Emarath Global Pvt Ltd",
-    email: "financialmanager@emarathglobal.com",
-    phone: "+91 81298 65032",
-    whatsappText: "Message Jansiya",
-    photo: "assets/photos/jansiya.jpg",
-  },
-
-  "shahabas-ali": {
-    name: "Mr. Shahabas Ali",
-    role: "Business Development Manager",
-    company: "Emarath Global Pvt Ltd",
-    email: "bdm@emarathglobal.com",
-    phone: "+91 73064 94305",
-    whatsappText: "Message Shahabas",
-    photo: "assets/photos/shahabas.jpg",
-  },
-
-  "arya-krishna": {
-    name: "Ms. Arya Krishna",
-    role: "HR Executive",
-    company: "Emarath Global Pvt Ltd",
-    email: "hr@emarathglobal.com",
-    phone: "+91 85474 70653",
-    whatsappText: "Message Arya",
-    photo: "assets/photos/arya.jpg",
-  },
-
-  "jaseed": {
-    name: "Mr. Jaseed",
-    role: "Vice President",
-    company: "Emarath Global Pvt Ltd",
-    email: "vp@emarathglobal.com",
-    phone: "+91 70121 55575",
-    whatsappText: "Message Jaseed",
-    photo: "assets/photos/jaseed.jpg",
-  },
-
-  "hasna-h": {
-    name: "Ms. Hasna H",
-    role: "Cross Functional Manager (CFM)",
-    company: "Emarath Global Pvt Ltd",
-    email: "cfm@emarathglobal.com",
-    phone: "+91 75107 67713",
-    whatsappText: "Message Hasna",
-    photo: "assets/photos/hasna.jpg",
-  },
-
-  "saife": {
-    name: "Mr. Saife",
-    role: "Consultant",
-    company: "Emarath Global Pvt Ltd",
-    email: "",
-    phone: "+91 97454 44800",
-    whatsappText: "Message Saife",
-    photo: "assets/photos/saife.jpg",
-  },
-};
-
-// ✅ Default fallback (if wrong ID typed)
-const DEFAULT_CARD = {
-  name: "Emarath Staff",
-  role: "Digital ID",
-  company: "Emarath Global Pvt Ltd",
-  email: "info@emarathglobal.com",
-  phone: "",
-  whatsappText: "Message on WhatsApp",
-  photo: "assets/photos/default.jpg",
-};
-
-// ✅ Get staff ID from URL
-function getStaffId() {
-  const urlParams = new URLSearchParams(window.location.search);
-
-  // ✅ Supports: card.html?id=ahamed-sijil
-  const idFromQuery = urlParams.get("id");
-  if (idFromQuery) return idFromQuery.trim().toLowerCase();
-
-  // ✅ Supports: /staff/ahamed-sijil/
-  const pathParts = window.location.pathname.split("/").filter(Boolean);
-  const staffIndex = pathParts.indexOf("staff");
-  if (staffIndex !== -1 && pathParts[staffIndex + 1]) {
-    return pathParts[staffIndex + 1].trim().toLowerCase();
-  }
-
-  return "";
-}
-
-// ✅ Safe element selector
-function el(id) {
-  return document.getElementById(id);
-}
-
-// ✅ Build WhatsApp link
-function buildWhatsAppLink(phone, name) {
-  const cleanPhone = (phone || "").replace(/[^\d+]/g, "");
-  const msg = encodeURIComponent(`Hi ${name},`);
-  if (!cleanPhone) return "#";
-  return `https://wa.me/${cleanPhone.replace("+", "")}?text=${msg}`;
-}
-
-// ✅ Create vCard file content (Download Contact)
-function buildVCard(data) {
-  const cleanPhone = (data.phone || "").replace(/\s+/g, "");
-  return [
-    "BEGIN:VCARD",
-    "VERSION:3.0",
-    `FN:${data.name || ""}`,
-    `ORG:${data.company || ""}`,
-    `TITLE:${data.role || ""}`,
-    data.email ? `EMAIL;TYPE=INTERNET:${data.email}` : "",
-    cleanPhone ? `TEL;TYPE=CELL:${cleanPhone}` : "",
-    "END:VCARD",
-  ]
-    .filter(Boolean)
-    .join("\n");
-}
-
-// ✅ Download vCard
-function downloadVCard(data) {
-  const vcardText = buildVCard(data);
-  const blob = new Blob([vcardText], { type: "text/vcard" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-
-  const safeName = (data.name || "contact")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-
-  a.download = `${safeName}.vcf`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  URL.revokeObjectURL(url);
-}
-
-// ✅ Main render function
-function renderCard() {
-  const staffId = getStaffId();
-  const data = STAFF[staffId] || DEFAULT_CARD;
-
-  // ✅ Elements from card.html
-  const profilePhoto = el("profilePhoto");
-  const fullName = el("fullName");
-  const role = el("role");
-  const company = el("company");
-
-  const emailRow = el("emailRow");
-  const emailText = el("emailText");
-
-  const phoneRow = el("phoneRow");
-  const phoneText = el("phoneText");
-
-  const waRow = el("waRow");
-  const waText = el("waText");
-
-  const saveBtn = el("saveBtn");
-  const shareBtn = el("shareBtn");
-
-  // ✅ Prevent blank screen if HTML IDs missing
-  if (!profilePhoto || !fullName || !role || !company) {
-    console.error("❌ card.html missing required IDs (profilePhoto/fullName/role/company)");
-    return;
-  }
-
-  // ✅ Fill data
-  fullName.textContent = data.name || "";
-  role.textContent = data.role || "";
-  company.textContent = data.company || "";
-
-  // ✅ Photo load (fixes broken image)
-  profilePhoto.src = data.photo || DEFAULT_CARD.photo;
-
-  // ✅ If photo missing show default
-  profilePhoto.onerror = () => {
-    profilePhoto.src = DEFAULT_CARD.photo;
+/* card.js — Emarath Staff Card renderer (GitHub Pages friendly) */
+(() => {
+  // ---- 1) Staff data (slug = URL id) ----
+  const STAFF = {
+    "ahamed-sijil": {
+      name: "Mr. Ahamed Sijil",
+      role: "Chief Executive Officer (CEO)",
+      company: "Emarath Global Pvt Ltd",
+      email: "ceo@emarathglobal.com",
+      phone: "+91 81578 97198",
+      waText: "Message on WhatsApp",
+      photo: "assets/photos/ahamed.jpg",
+    },
+    "jansiya-s": {
+      name: "Ms. Jansiya S",
+      role: "Financial Manager",
+      company: "Emarath Global Pvt Ltd",
+      email: "financialmanager@emarathglobal.com",
+      phone: "+91 81298 65032",
+      waText: "Message on WhatsApp",
+      photo: "assets/photos/jansiya.jpg",
+    },
+    "shahabas-ali": {
+      name: "Mr. Shahabas Ali",
+      role: "Business Development Manager",
+      company: "Emarath Global Pvt Ltd",
+      email: "bdm@emarathglobal.com",
+      phone: "+91 73064 94305",
+      waText: "Message on WhatsApp",
+      photo: "assets/photos/shahabas.jpg",
+    },
+    "arya-krishna": {
+      name: "Ms. Arya Krishna",
+      role: "HR Executive",
+      company: "Emarath Global Pvt Ltd",
+      email: "hr@emarathglobal.com",
+      phone: "+91 85474 70653",
+      waText: "Message on WhatsApp",
+      photo: "assets/photos/arya.jpg",
+    },
+    "jaseed": {
+      name: "Mr. Jaseed",
+      role: "Vice President",
+      company: "Emarath Global Pvt Ltd",
+      email: "vp@emarathglobal.com",
+      phone: "+91 70121 55575",
+      waText: "Message on WhatsApp",
+      photo: "assets/photos/jaseed.jpg",
+    },
+    "hasna-h": {
+      name: "Ms. Hasna H",
+      role: "Cross Functional Manager (CFM)",
+      company: "Emarath Global Pvt Ltd",
+      email: "cfm@emarathglobal.com",
+      phone: "+91 75107 67713",
+      waText: "Message on WhatsApp",
+      photo: "assets/photos/hasna.jpg",
+    },
+    "saife": {
+      name: "Mr. Saife",
+      role: "Consultant",
+      company: "Emarath Global Pvt Ltd",
+      email: "",
+      phone: "+91 97454 44800",
+      waText: "Message on WhatsApp",
+      photo: "assets/photos/saife.jpg",
+    },
   };
 
-  // ✅ Email
-  if (data.email) {
-    emailText.textContent = data.email;
-    emailRow.href = `mailto:${data.email}`;
-    emailRow.style.display = "flex";
-  } else {
-    emailRow.style.display = "none";
+  const DEFAULT_PHOTO = "assets/photos/default.jpg";
+
+  // ---- 2) Helpers ----
+  const $ = (id) => document.getElementById(id);
+
+  function getSlug() {
+    // Prefer ?id=...
+    const url = new URL(window.location.href);
+    const id = (url.searchParams.get("id") || "").trim();
+    if (id) return id;
+
+    // Fallback: /staff/<slug>/
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    const staffIndex = parts.indexOf("staff");
+    if (staffIndex >= 0 && parts[staffIndex + 1]) return parts[staffIndex + 1];
+
+    return "";
   }
 
-  // ✅ Phone
-  if (data.phone) {
-    phoneText.textContent = data.phone;
-    phoneRow.href = `tel:${data.phone.replace(/\s+/g, "")}`;
-    phoneRow.style.display = "flex";
-  } else {
-    phoneRow.style.display = "none";
+  function digitsOnly(phone) {
+    return (phone || "").replace(/[^\d]/g, "");
   }
 
-  // ✅ WhatsApp
-  if (data.phone) {
-    waText.textContent = data.whatsappText || "Message on WhatsApp";
-    waRow.href = buildWhatsAppLink(data.phone, data.name);
-    waRow.style.display = "flex";
-  } else {
-    waRow.style.display = "none";
+  function safeText(el, value, fallback = "—") {
+    if (!el) return;
+    el.textContent = value && String(value).trim() ? value : fallback;
   }
 
-  // ✅ Save Contact button
-  if (saveBtn) {
-    saveBtn.addEventListener("click", () => downloadVCard(data));
+  function showRow(rowEl, show) {
+    if (!rowEl) return;
+    rowEl.style.display = show ? "" : "none";
   }
 
-  // ✅ Share button
-  if (shareBtn) {
-    shareBtn.addEventListener("click", async () => {
-      const shareUrl = window.location.href;
+  function setHref(aEl, href) {
+    if (!aEl) return;
+    aEl.setAttribute("href", href);
+  }
 
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: data.name,
-            text: `${data.name} - ${data.role}`,
-            url: shareUrl,
-          });
-        } catch (e) {
-          console.log("Share cancelled");
+  function makeVCard(person) {
+    // Very simple vCard 3.0
+    const n = (person.name || "").replace(/\s+/g, " ").trim();
+    const org = (person.company || "").trim();
+    const title = (person.role || "").trim();
+    const email = (person.email || "").trim();
+    const tel = (person.phone || "").trim();
+
+    const lines = [
+      "BEGIN:VCARD",
+      "VERSION:3.0",
+      `FN:${n}`,
+      org ? `ORG:${org}` : "",
+      title ? `TITLE:${title}` : "",
+      email ? `EMAIL;TYPE=INTERNET:${email}` : "",
+      tel ? `TEL;TYPE=CELL:${tel}` : "",
+      "END:VCARD",
+    ].filter(Boolean);
+
+    return lines.join("\n");
+  }
+
+  async function copyToClipboard(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  // ---- 3) Render ----
+  function render() {
+    const slug = getSlug();
+    const person = STAFF[slug];
+
+    // Elements (must match card.html IDs)
+    const profilePhoto = $("profilePhoto");
+    const fullName = $("fullName");
+    const role = $("role");
+    const company = $("company");
+
+    const saveBtn = $("saveBtn");
+    const shareBtn = $("shareBtn");
+
+    const emailRow = $("emailRow");
+    const emailText = $("emailText");
+
+    const phoneRow = $("phoneRow");
+    const phoneText = $("phoneText");
+
+    const waRow = $("waRow");
+    const waText = $("waText");
+
+    // If slug not found, show a hard truth fallback
+    if (!person) {
+      safeText(fullName, "Not found");
+      safeText(role, "Invalid staff id");
+      safeText(company, "Emarath Global Pvt Ltd");
+      if (profilePhoto) profilePhoto.src = DEFAULT_PHOTO;
+
+      showRow(emailRow, false);
+      showRow(phoneRow, false);
+      showRow(waRow, false);
+
+      if (saveBtn) saveBtn.disabled = true;
+      return;
+    }
+
+    // Text
+    safeText(fullName, person.name);
+    safeText(role, person.role);
+    safeText(company, person.company);
+
+    // Photo (force correct image + face crop)
+    if (profilePhoto) {
+      profilePhoto.src = person.photo || DEFAULT_PHOTO;
+
+      // If image fails, fallback to default
+      profilePhoto.onerror = () => {
+        profilePhoto.onerror = null;
+        profilePhoto.src = DEFAULT_PHOTO;
+      };
+    }
+
+    // Email row
+    const hasEmail = !!(person.email && person.email.trim());
+    showRow(emailRow, hasEmail);
+    if (hasEmail) {
+      safeText(emailText, person.email);
+      setHref(emailRow, `mailto:${person.email}`);
+    }
+
+    // Phone row
+    const hasPhone = !!(person.phone && person.phone.trim());
+    showRow(phoneRow, hasPhone);
+    if (hasPhone) {
+      safeText(phoneText, person.phone);
+      setHref(phoneRow, `tel:${digitsOnly(person.phone)}`);
+    }
+
+    // WhatsApp row
+    showRow(waRow, hasPhone);
+    if (hasPhone) {
+      safeText(waText, person.waText || "Message on WhatsApp");
+      const waNumber = digitsOnly(person.phone);
+      setHref(waRow, `https://wa.me/${waNumber}`);
+    }
+
+    // Save Contact button
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.onclick = () => {
+        const vcf = makeVCard(person);
+        const blob = new Blob([vcf], { type: "text/vcard;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${slug}.vcf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        setTimeout(() => URL.revokeObjectURL(url), 500);
+      };
+    }
+
+    // Share button
+    if (shareBtn) {
+      shareBtn.onclick = async () => {
+        const shareUrl = window.location.href;
+
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: person.name,
+              text: `${person.name} — ${person.role}`,
+              url: shareUrl,
+            });
+            return;
+          } catch {
+            // fall through to clipboard
+          }
         }
-      } else {
-        // fallback copy
-        try {
-          await navigator.clipboard.writeText(shareUrl);
-          alert("✅ Link copied!");
-        } catch (err) {
-          alert("❌ Copy failed. Please copy manually:\n" + shareUrl);
-        }
-      }
-    });
+
+        const ok = await copyToClipboard(shareUrl);
+        shareBtn.textContent = ok ? "✓ Copied" : "Copy failed";
+        setTimeout(() => (shareBtn.textContent = "↗ Share"), 1200);
+      };
+    }
   }
-}
 
-// ✅ Run after page loads
-document.addEventListener("DOMContentLoaded", renderCard);
-
-// ✅ Optional: make callable from console
-window.downloadVCard = () => {
-  const staffId = getStaffId();
-  const data = STAFF[staffId] || DEFAULT_CARD;
-  downloadVCard(data);
-};
+  // ---- 4) Boot ----
+  // Ensure DOM is ready even if script is not deferred
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", render);
+  } else {
+    render();
+  }
+})();
